@@ -1,0 +1,88 @@
+docker container run --publish 80:80 nginx
+1. docker find image locally in image cache doesn't find anything.
+2. docker find image from docker hub.(autoload the lastest version)
+3. started a new container from that image is downloaded
+4. Opened port 80 on the host IP
+5. routes that traffic to the container IP, port 80
+
+run nginx, mysql, httpd (apache)
+run all of them detach -d , name them with --name
+nginx should listen on 80:80, httpd on 8080:80, mysql on 3306:3306
+when running mysql, use the --env option -e to pass in MYSQL_RANDOM_ROOT_PASSWORD=yes
+use docker container logs on mysql to find the random password it created on startup
+clean it all up with docker container stop and docker container rm (both can accept multiple names or ID's)
+Use docker container ls to ensure everything is correct before  and after cleanup 
+docker container run -d -p 3306:3306 --name db -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql
+GENERATED ROOT PASSWORD: pheexahv0ciesheelierahmoophieGoo
+
+docker container run -d --name webserver -p 8080:80 httpd
+curl localhost:8080
+<html><body><h1>It works!</h1></body></html>
+docker container run -d --name proxy -p 80:80 nginx
+curl localhost
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+docker container inspect mysql
+
+Getting a Shell Inside Containers
+
+docker container  run -it --name proxy nginx bash
+
+docker container  exec -it mysql bash
+
+mysql not inclued the ps is there 
+so we have to install it
+
+apt-get update && apt-get install -y procps
+
+docker pull alpine
+alpine dont have bash but it has shell (sh)
+ docker container run -it alpine sh
+alpine have apk and we can use apk to install bash for sure
+docker network: concepts
+
+docker container port <container>
+
+docker network default
+each container connected to a private virtual network "bridge" (VPN)
+each virtual network routes through NAT firewall on host IP
+all container on a virtual network con talk to each other without -p
+Best practice is to create a new virtual network for each app:
+network "my_web_app" for mysql and php /apache containers
+network "my_api" for mongo and nodejs container
+"Batteries Included, but Removable"
+make new virtual networks
+attach containers to more then one virtual network (or none)
+skip virtual networks and use host IP (--net=host)
+Use different Docker networks drivers to gain new abilities
+
+and a lot of tools intergrate with docker to extend those abilities
+
+-p (HOST:CONTANER format) --publish
+
+
+docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost 
+study in chapter 28
