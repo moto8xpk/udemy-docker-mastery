@@ -86,3 +86,55 @@ and a lot of tools intergrate with docker to extend those abilities
 
 docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost 
 study in chapter 28
+issue updated in nginx
+
+docker container run <stuff> nginx (replace nginx:alpine
+
+Docker network : CLI Management
+
+show networks: docker network ls
+Inspect a network:  docker network inspect <network id or network name>
+Create a network: docker network create <name of network> (new subnet)
+connect a container to a new network: this will add a container to a new network
+disconnect a container from a new network: this will remove a container from a new network
+attach network to a container: 
+Detach a network from a container:
+
+demo
+we have a nginx server had run on network my_app_net with name my_nginx
+now we run another nginx server with name new_nginx in the my_app_net network too
+
+docker container run -d --name new_nginx --network my_app_net  nginx
+
+If the version in nginx server dont have ping package we should access to nginx server via bash shell to install ping package by the command below:
+
+docker container exec -it new_nginx bash
+
+and then you can run the command to install the package here:
+
+apt-get update && apt-get install iputils-ping
+
+now we run the command ping to test the connection from new_nginx to my_nginx container together in my_app_net:
+
+docker container exec -it new_nginx ping my_nginx
+
+and you test it again
+
+docker container exec -it my_nginx ping new_nginx 
+
+Assignment
+
+curl command
+use -it on ubuntu and centos 
+docker container -rm to save cleanup
+if the ubuntu doesnt have curl you can run this cmd:
+
+apt-get update && apt-get install curl
+
+centos
+
+yum update curl
+
+curl --version
+study at course 31
+
