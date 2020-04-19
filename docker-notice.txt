@@ -138,3 +138,63 @@ yum update curl
 curl --version
 study at course 31
 
+docker container run --rm -it centos:7 bash
+
+yum update curl
+
+docker container run --rm -it ubuntu:14.04 bash
+
+check curl version
+curl --version
+centos:7 curl 7.29.0
+
+in ubuntu
+apt-get update && apt-get install curl
+
+then check curl version 
+curl 7.35.0
+
+DNS Round Robin
+
+Elasticsearch : 
+Feature:
+Scalable 
+real-time 
+Highly available
+Developer-friendly
+Versatile storage
+Query & aggregations
+
+study course 34
+
+course 35
+round robin Test
+
+create network
+
+docker network create dude
+
+then create 2 containers for elasticsearch in the "dude" network with the DNS name "search" (in every system using this kind of DNS it have lot of Ips with behind the "search" DNS name like google has use this kind of DNS ) 
+
+for example here:
+we have dns : search.com with a lot of ips behind this dns 172.1.0.2 .3 .4 etc
+
+docker container  run -d --net dude  --net-alias search elasticsearch:2
+
+docker container  run -d --net dude  --net-alias search elasticsearch:2
+
+run a os to test the dns name with alpine:3.10 dont use the latest alpine it have issue in nslookup package
+or you can use ubuntu or centos
+
+docker container run --rm -d --net dude alpine:3.10 nslookup search.
+
+To test the network (if those container in the same network (NETID))
+
+Now our 2 datastore or online now on our dude network so now you can test it service Restful with create a centos or other kind of OS with curl package to test the services
+
+docker container run --rm --net dude centos curl -s search:9200
+
+course 36
+Container Image: where to find them and how to build them
+
+
